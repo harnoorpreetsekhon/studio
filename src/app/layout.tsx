@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'PromoPulse Dashboard',
+  title: 'Promotions in MMM',
   description: 'Marketing Mix Modeling (MMM) Dashboard for Promotion Effect Analysis',
 };
 
