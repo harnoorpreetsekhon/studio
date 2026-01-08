@@ -18,6 +18,7 @@ import {
   Minus,
   Sparkles,
   Ticket,
+  Heart,
 } from "lucide-react";
 import type { Icon as LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -57,7 +58,8 @@ import { ModelFitChart } from "@/components/charts/section6/model-fit-chart";
 import { ResidualsChart } from "@/components/charts/section6/residuals-chart";
 import { ParameterStabilityChart } from "@/components/charts/section6/parameter-stability-chart";
 import { ConfidenceIntervalsChart } from "@/components/charts/section6/confidence-intervals-chart";
-
+import { NewVsReturningCustomersChart } from "@/components/charts/section7/new-vs-returning-customers-chart";
+import { AcquisitionVsRetentionChart } from "@/components/charts/section7/acquisition-vs-retention-chart";
 
 type Kpi = {
   title: string;
@@ -109,6 +111,8 @@ function calculateKpis(data: PromoData[]) {
     data.reduce((sum, d) => sum + d.promo_cannibalization, 0) / data.length || 0;
   const promoHaloEffectIndex =
     data.reduce((sum, d) => sum + d.promo_halo_effect, 0) / data.length || 1.05;
+  const loyaltyRate = 
+    data.reduce((sum, d) => sum + d.loyalty_rate, 0) / data.length || 0;
 
   return {
     totalPromoSpend,
@@ -123,6 +127,7 @@ function calculateKpis(data: PromoData[]) {
     profitDuringPromo,
     promoCannibalization,
     promoHaloEffectIndex,
+    loyaltyRate
   };
 }
 
@@ -163,13 +168,14 @@ export default function DashboardPage({
     { title: "Profit During Promo", value: formatCurrency(kpis.profitDuringPromo), icon: LineChart, description: "Profit calculated as (Revenue - Cost of Goods - Promo Spend) during promotional periods." },
     { title: "Cannibalization %", value: formatPercentage(kpis.promoCannibalization), icon: Minus, description: "Estimated percentage of promo sales that were stolen from other products in your portfolio." },
     { title: "Halo Effect Index", value: formatNumber(kpis.promoHaloEffectIndex), icon: Sparkles, description: "Sales lift in related, non-promoted products as a result of the promotion." },
+    { title: "Loyalty Rate", value: formatPercentage(kpis.loyaltyRate), icon: Heart, description: "Percentage of total sales from returning customers, indicating customer loyalty." },
   ];
 
   return (
     <div className="flex min-h-screen w-full flex-col">
       <DashboardHeader kpisForInsights={kpis} optimizerParams={optimizerParams} />
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 xl:grid-cols-6">
+        <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 xl:grid-cols-7">
           {kpiList.map((kpi) => (
             <KpiCard key={kpi.title} {...kpi} />
           ))}
@@ -241,6 +247,19 @@ export default function DashboardPage({
           <Card><CouponRoiChart data={filteredData} /></Card>
           <Card><MarketingChannelImpactChart data={filteredData} /></Card>
           <Card><DigitalJourneyConversionChart data={filteredData} /></Card>
+        </div>
+        
+        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="col-span-1 grid auto-rows-max gap-4 md:gap-8 xl:col-span-3">
+             <Card>
+              <CardHeader>
+                <CardTitle>Customer Deep Dive</CardTitle>
+                <CardDescription>Analysis of customer behavior and segmentation during promotions.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <Card><NewVsReturningCustomersChart data={filteredData} /></Card>
+          <Card><AcquisitionVsRetentionChart data={filteredData} /></Card>
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2">

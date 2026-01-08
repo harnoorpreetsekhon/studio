@@ -60,6 +60,14 @@ export function generatePromoData(): PromoData[] {
         
         const promo_cannibalization = promo_flag ? Math.random() * 0.1 : 0; // 0-10% cannibalization
         const promo_halo_effect = promo_flag ? 1 + Math.random() * 0.05 : 1; // up to 5% halo
+        
+        const new_customers = promo_flag ? sales * (0.1 + Math.random() * 0.2) : sales * (0.05 + Math.random() * 0.05);
+        const returning_customers = sales - new_customers;
+        const loyalty_rate = returning_customers / sales;
+        
+        const acquisition_cost = promo_flag ? (promo_cost / new_customers) : 0;
+        const retention_sales = returning_customers * price;
+
 
         data.push({
           date: date.toISOString().split('T')[0],
@@ -91,6 +99,11 @@ export function generatePromoData(): PromoData[] {
           profit_during_promo,
           promo_cannibalization,
           promo_halo_effect,
+          new_customers: Math.round(new_customers),
+          returning_customers: Math.round(returning_customers),
+          loyalty_rate,
+          acquisition_cost,
+          retention_sales,
         });
       }
     }

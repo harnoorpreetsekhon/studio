@@ -28,6 +28,11 @@ export type PromoData = {
     profit_during_promo: number;
     promo_cannibalization: number;
     promo_halo_effect: number;
+    new_customers: number;
+    returning_customers: number;
+    loyalty_rate: number;
+    acquisition_cost: number;
+    retention_sales: number;
   };
   
   export type UniqueOptions = {
