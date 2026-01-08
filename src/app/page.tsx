@@ -48,6 +48,12 @@ import { DiscountVsLiftScatter } from "@/components/charts/section3/discount-vs-
 import { PromoRoiTrendChart } from "@/components/charts/section4/promo-roi-trend-chart";
 import { ProfitComparisonChart } from "@/components/charts/section4/profit-comparison-chart";
 
+import { ModelFitChart } from "@/components/charts/section5/model-fit-chart";
+import { ResidualsChart } from "@/components/charts/section5/residuals-chart";
+import { ParameterStabilityChart } from "@/components/charts/section5/parameter-stability-chart";
+import { ConfidenceIntervalsChart } from "@/components/charts/section5/confidence-intervals-chart";
+
+
 type Kpi = {
   title: string;
   value: string;
@@ -224,6 +230,21 @@ export default function DashboardPage({
           </div>
           <Card><PromoRoiTrendChart data={filteredData} /></Card>
           <Card><ProfitComparisonChart data={filteredData} /></Card>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2">
+           <div className="col-span-1 grid auto-rows-max gap-4 md:gap-8 lg:col-span-2">
+             <Card>
+              <CardHeader>
+                <CardTitle>MMM Diagnostics</CardTitle>
+                <CardDescription>Diagnostics to assess model performance and reliability.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <Card><ModelFitChart data={filteredData} /></Card>
+          <Card><ResidualsChart data={filteredData} /></Card>
+          <Card><ParameterStabilityChart data={filteredData} /></Card>
+          <Card><ConfidenceIntervalsChart data={filteredData} /></Card>
         </div>
 
       </main>
