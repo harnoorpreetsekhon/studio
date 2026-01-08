@@ -33,6 +33,9 @@ export type PromoData = {
     loyalty_rate: number;
     acquisition_cost: number;
     retention_sales: number;
+    compliance_rate: number;
+    redemption_rate: number;
+    stock_levels: number;
   };
   
   export type UniqueOptions = {

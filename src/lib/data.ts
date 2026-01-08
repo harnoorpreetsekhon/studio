@@ -37,13 +37,18 @@ export function generatePromoData(): PromoData[] {
         const marketing_spend_video = Math.random() * 1000;
         const competitor_price = price * (1 + (Math.random() - 0.5) * 0.2);
 
+        // Operational Metrics
+        const compliance_rate = promo_flag ? 0.85 + Math.random() * 0.15 : 1; // 85-100% for promo weeks
+        const redemption_rate = (promo_type === 'cashback' || promo_type === '% discount') ? 0.4 + Math.random() * 0.3 : 0; // 40-70% for relevant types
+        const stock_levels = 0.9 + Math.random() * 0.2; // 90% to 110% of expected sales
+
         // Derived Fields
         const promo_elasticity = -1.2 - Math.random() * 0.8;
         const marketing_effect = (marketing_spend_search + marketing_spend_social + marketing_spend_video) * 0.1;
         
         const promo_effect = promo_flag ? baseline_sales * (-promo_elasticity * discount_pct) * (1 - discount_pct) : 0; // Diminishing returns
         
-        const sales = baseline_sales + marketing_effect + promo_effect + (Math.random() - 0.5) * 50;
+        const sales = (baseline_sales + marketing_effect + promo_effect) * compliance_rate * (promo_flag ? stock_levels : 1) + (Math.random() - 0.5) * 50;
         const incremental_sales = Math.max(0, sales - baseline_sales);
         const incremental_revenue = incremental_sales * price;
 
@@ -104,6 +109,9 @@ export function generatePromoData(): PromoData[] {
           loyalty_rate,
           acquisition_cost,
           retention_sales,
+          compliance_rate,
+          redemption_rate,
+          stock_levels,
         });
       }
     }

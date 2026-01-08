@@ -19,6 +19,8 @@ import {
   Sparkles,
   Ticket,
   Heart,
+  CheckCircle2,
+  Package,
 } from "lucide-react";
 import type { Icon as LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -50,6 +52,7 @@ import { DiscountVsLiftScatter } from "@/components/charts/section3/discount-vs-
 import { CouponRoiChart } from "@/components/charts/section4/coupon-roi-chart";
 import { MarketingChannelImpactChart } from "@/components/charts/section4/marketing-channel-impact-chart";
 import { DigitalJourneyConversionChart } from "@/components/charts/section4/digital-journey-conversion-chart";
+import { OperationalConstraintsChart } from "@/components/charts/section4/operational-constraints-chart";
 
 import { PromoRoiTrendChart } from "@/components/charts/section5/promo-roi-trend-chart";
 import { ProfitComparisonChart } from "@/components/charts/section5/profit-comparison-chart";
@@ -113,6 +116,10 @@ function calculateKpis(data: PromoData[]) {
     data.reduce((sum, d) => sum + d.promo_halo_effect, 0) / data.length || 1.05;
   const loyaltyRate = 
     data.reduce((sum, d) => sum + d.loyalty_rate, 0) / data.length || 0;
+  const complianceRate =
+    data.reduce((sum, d) => sum + d.compliance_rate, 0) / data.length || 0;
+  const redemptionRate =
+    data.filter(d=>d.redemption_rate > 0).reduce((sum, d) => sum + d.redemption_rate, 0) / data.filter(d=>d.redemption_rate > 0).length || 0;
 
   return {
     totalPromoSpend,
@@ -127,7 +134,9 @@ function calculateKpis(data: PromoData[]) {
     profitDuringPromo,
     promoCannibalization,
     promoHaloEffectIndex,
-    loyaltyRate
+    loyaltyRate,
+    complianceRate,
+    redemptionRate
   };
 }
 
@@ -169,6 +178,8 @@ export default function DashboardPage({
     { title: "Cannibalization %", value: formatPercentage(kpis.promoCannibalization), icon: Minus, description: "Estimated percentage of promo sales that were stolen from other products in your portfolio." },
     { title: "Halo Effect Index", value: formatNumber(kpis.promoHaloEffectIndex), icon: Sparkles, description: "Sales lift in related, non-promoted products as a result of the promotion." },
     { title: "Loyalty Rate", value: formatPercentage(kpis.loyaltyRate), icon: Heart, description: "Percentage of total sales from returning customers, indicating customer loyalty." },
+    { title: "Compliance Rate", value: formatPercentage(kpis.complianceRate), icon: CheckCircle2, description: "Percentage of stores correctly implementing the promotion." },
+    { title: "Redemption Rate", value: formatPercentage(kpis.redemptionRate), icon: Ticket, description: "Percentage of offered coupons or cashback that were redeemed by customers." },
   ];
 
   return (
@@ -247,6 +258,7 @@ export default function DashboardPage({
           <Card><CouponRoiChart data={filteredData} /></Card>
           <Card><MarketingChannelImpactChart data={filteredData} /></Card>
           <Card><DigitalJourneyConversionChart data={filteredData} /></Card>
+          <Card><OperationalConstraintsChart data={filteredData} /></Card>
         </div>
         
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
