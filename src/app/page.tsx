@@ -17,6 +17,7 @@ import {
   Plus,
   Minus,
   Sparkles,
+  Ticket,
 } from "lucide-react";
 import type { Icon as LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -45,13 +46,17 @@ import { OfferEffectivenessHeatmap } from "@/components/charts/section3/offer-ef
 import { BogoUpliftCurve } from "@/components/charts/section3/bogo-uplift-curve";
 import { DiscountVsLiftScatter } from "@/components/charts/section3/discount-vs-lift-scatter";
 
-import { PromoRoiTrendChart } from "@/components/charts/section4/promo-roi-trend-chart";
-import { ProfitComparisonChart } from "@/components/charts/section4/profit-comparison-chart";
+import { CouponRoiChart } from "@/components/charts/section4/coupon-roi-chart";
+import { MarketingChannelImpactChart } from "@/components/charts/section4/marketing-channel-impact-chart";
+import { DigitalJourneyConversionChart } from "@/components/charts/section4/digital-journey-conversion-chart";
 
-import { ModelFitChart } from "@/components/charts/section5/model-fit-chart";
-import { ResidualsChart } from "@/components/charts/section5/residuals-chart";
-import { ParameterStabilityChart } from "@/components/charts/section5/parameter-stability-chart";
-import { ConfidenceIntervalsChart } from "@/components/charts/section5/confidence-intervals-chart";
+import { PromoRoiTrendChart } from "@/components/charts/section5/promo-roi-trend-chart";
+import { ProfitComparisonChart } from "@/components/charts/section5/profit-comparison-chart";
+
+import { ModelFitChart } from "@/components/charts/section6/model-fit-chart";
+import { ResidualsChart } from "@/components/charts/section6/residuals-chart";
+import { ParameterStabilityChart } from "@/components/charts/section6/parameter-stability-chart";
+import { ConfidenceIntervalsChart } from "@/components/charts/section6/confidence-intervals-chart";
 
 
 type Kpi = {
@@ -224,11 +229,25 @@ export default function DashboardPage({
           <Card><DiscountVsLiftScatter data={filteredData} /></Card>
         </div>
 
+        <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="col-span-1 grid auto-rows-max gap-4 md:gap-8 xl:col-span-3">
+             <Card>
+              <CardHeader>
+                <CardTitle>Digital Execution &amp; Attribution</CardTitle>
+                <CardDescription>Connecting promo impact to digital marketing activities and customer journeys.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+          <Card><CouponRoiChart data={filteredData} /></Card>
+          <Card><MarketingChannelImpactChart data={filteredData} /></Card>
+          <Card><DigitalJourneyConversionChart data={filteredData} /></Card>
+        </div>
+
         <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-2">
           <div className="col-span-1 grid auto-rows-max gap-4 md:gap-8 lg:col-span-2">
              <Card>
               <CardHeader>
-                <CardTitle>ROI & Financial Impact</CardTitle>
+                <CardTitle>ROI &amp; Financial Impact</CardTitle>
                 <CardDescription>Bottom-line financial metrics to evaluate promotional profitability.</CardDescription>
               </CardHeader>
             </Card>
