@@ -1,6 +1,7 @@
  "use server";
 
 import { generateInsights, type GenerateInsightsInput } from "@/ai/flows/automated-insight-generator";
+import { optimizePromoCalendar, type PromoCalendarInput } from "@/ai/flows/promo-optimizer-flow";
 
 export async function getAiInsights(kpis: Omit<GenerateInsightsInput, 'promoType' | 'product' | 'region'>) {
     try {
@@ -28,5 +29,15 @@ export async function getAiInsights(kpis: Omit<GenerateInsightsInput, 'promoType
     } catch (error) {
         console.error("Error generating insights:", error);
         return { success: false, error: "Failed to generate insights." };
+    }
+}
+
+export async function getPromoOptimizations(input: PromoCalendarInput) {
+    try {
+        const result = await optimizePromoCalendar(input);
+        return { success: true, recommendations: result.recommendations };
+    } catch (error) {
+        console.error("Error generating promo optimizations:", error);
+        return { success: false, error: "Failed to generate recommendations." };
     }
 }
